@@ -1,7 +1,13 @@
 FROM php:7.0-apache
 
+ENV TERM xterm
+
 # System update
 RUN set -x \
+    && echo 'alias ll="ls -laF"' >> /root/.bashrc \
+    && echo 'alias e="exit"' >> /root/.bashrc \
+    && echo 'alias cls="clear"' >> /root/.bashrc \
+
     && apt-get -qqy update \
     && apt-get install -qqy \
         apt-utils \
@@ -36,12 +42,7 @@ RUN set -x \
 
     # Allow header overrides in .htaccess files
     && a2enmod headers \
-    && a2enmod rewrite \
-
-    #
-    && echo 'alias ll="ls -laF"' >> /root/.bashrc
-
-RUN apt-get install -y vim
+    && a2enmod rewrite
 
 # Add resources
 COPY _image/etc/apache2/sites-enabled/vhost.conf /etc/apache2/sites-enabled/wkhtml.conf
