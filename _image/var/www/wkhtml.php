@@ -25,7 +25,6 @@ switch ($_SERVER['REQUEST_URI']) {
         $format = WkHtml::TO_PDF;
         header('Content-Type: application/pdf');
     break;
-    break;
 }
 
 $wk = new WkHtml($input, $format, $_GET);

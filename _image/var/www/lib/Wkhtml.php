@@ -10,20 +10,6 @@ class WkHtml {
     protected $_filename = null;
     protected $_output_format = self::TO_JPG;
     protected $_options = [];
-//    protected $_commands = [
-//        self::TO_JPG => [
-//            'command' => '/usr/bin/wkhtmltoimage  --disable-smart-width --encoding utf8 '
-//            , 'content-type' => 'image/jpeg'
-//        ]
-//        , self::TO_PNG => [
-//            'command' => '/usr/bin/wkhtmltoimage'
-//            , 'content-type' => 'image/png'
-//        ]
-//        , self::TO_PDF => [
-//            'command' => '/usr/bin/wkhtmltopdf'
-//            , 'content-type' => 'application/pdf'
-//        ]
-//    ];
 
     public function __construct(string $input, int $format = null, array $options) {
         $this->_input = $input;
