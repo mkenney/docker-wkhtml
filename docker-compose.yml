@@ -1,11 +1,5 @@
-# Requires docker-compose >=v1.4.0
 wkhtml:
-    #image: mkenney/wkhtml
-    build: ./
+    image: mkenney/wkhtml:latest
     container_name: wkhtml
     ports:
         - "80"
-    volumes:
-        - ./_image/var/www:/var/www
-    environment:
-        - HTTPD_CONF_SERVERNAME=wkhtml
