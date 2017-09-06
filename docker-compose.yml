@@ -1,5 +1,7 @@
-wkhtml:
-    image: mkenney/wkhtml:latest
-    container_name: wkhtml
-    ports:
-        - "80"
+version: '3'
+services:
+    wkhtml:
+        image: mkenney/wkhtml:latest
+        container_name: wkhtml
+        ports:
+            - "80"

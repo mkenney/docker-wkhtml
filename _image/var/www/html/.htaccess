@@ -1,7 +1,2 @@
 RewriteEngine on
-
 RewriteRule . index.php [L]
-
-# php-cgi under Apache does not pass HTTP Basic user/pass to PHP by default
-#RewriteCond %{HTTP:Authorization} ^(.*)
-#RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
