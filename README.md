@@ -4,28 +4,28 @@ Copyright &copy;2017 Michael Kenney
 
 ## Usage
 
-This service provides four endpoints: /gif, /jpg, /pdf, and /png. In order to make use of them, POST a valid HTML document to any of these endpoints and the raw result will be returned with an appropriate content-type header.
+This service provides four endpoints: `/gif`, `/jpg`, `/pdf`, and `/png`. In order to make use of them, `POST` a valid HTML document to any of these endpoints and the raw result will be returned with an appropriate content-type header.
 
 ### Options
 
-Options are passed as URL query parameters. For example, to print two copies of a PDF, the POST URL would be /pdf?copies=2.
+Options are passed as URL query parameters. For example, to print a PDF in landscape orientation, the `POST` URL would be `/pdf?orientation=landscape`.
 
-* The /jpg, /png, and /gif endpoints:
-  * crop-h: an integer describing the number of pixels to apply
-  * crop-w: an integer describing the number of pixels to apply
-  * crop-x: an integer describing the number of pixels to apply
-  * crop-y: an integer describing the number of pixels to apply
-  * height: an integer describing the number of pixels to apply
-  * quality: an integer value from 0 to 100
-  * width: an integer describing the number of pixels to apply
-* The /pdf endpoint.
-  * no-collate: no value required, do not collate when printing multiple copies
-  * grayscale: no value required, generate PDF documents in greyscale instead of color
-  * lowquality: no value required, generate lower quality PDF documents to decrease file size
-  * copies: an integer describing the number of copies to print
-  * orientation: a string either 'Landscape' or 'Portrait' (default 'Portrait').
-  * page-size: a string defining the page size: 'A4', 'Letter', etc. (default 'A4').
-  * title: the title of the generated pdf file (The title of the first document is used if not specified)
+* The `/jpg`, `/png`, and `/gif` endpoints:
+  * **crop-h**: an integer describing the number of pixels to apply
+  * **crop-w**: an integer describing the number of pixels to apply
+  * **crop-x**: an integer describing the number of pixels to apply
+  * **crop-y**: an integer describing the number of pixels to apply
+  * **height**: an integer describing the number of pixels to apply
+  * **quality**: an integer value from 0 to 100
+  * **width**: an integer describing the number of pixels to apply
+* The `/pdf` endpoint.
+  * **no-collate**: no value required, do not collate when printing multiple copies
+  * **grayscale**: no value required, generate PDF documents in greyscale instead of color
+  * **lowquality**: no value required, generate lower quality PDF documents to decrease file size
+  * **copies**: an integer describing the number of copies to print
+  * **orientation**: a string either 'Landscape' or 'Portrait' (default 'Portrait').
+  * **page-size**: a string defining the page size: 'A4', 'Letter', etc. (default 'A4').
+  * **title**: the title of the generated pdf file (The title of the first document is used if not specified)
 
 See the [wkhtml documentation](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt) for additional details.
 

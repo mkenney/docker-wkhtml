@@ -22,15 +22,15 @@
 
         <h2>Usage</h2>
         <p>
-            This service provides four endpoints: /gif, /jpg, /pdf, and /png. In order to make use
-            of them, <code>POST</code> a valid HTML document to any of these endpoints and the raw
-            result will be returned with an appropriate content-type header.
+            This service provides four endpoints: <code>/gif</code>, <code>/jpg</code>, <code>/pdf</code>,
+            and <code>/png</code>. In order to make use of them, <code>POST</code> a valid HTML document
+            to any of these endpoints and the raw result will be returned with an appropriate content-type header.
         </p>
 
         <h3>Options</h3>
         <p>
-            Options are passed as URL query parameters. For example, to print two copies of a PDF, the
-            <code>POST</code> URL would be <code>/pdf?copies=2</code>.
+            Options are passed as URL query parameters. For example, to print a PDF in landscape orientation, the
+            <code>POST</code> URL would be <code>/pdf?orientation=landscape</code>.
         </p>
         <ul>
             <li>
