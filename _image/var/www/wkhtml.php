@@ -23,5 +23,5 @@ switch ($uri) {
     break;
 }
 
-$wk = new WkHtml($input, $format, $_GET);
+$wk = new WkHtml($input, $_GET, $format);
 $wk->generate();
