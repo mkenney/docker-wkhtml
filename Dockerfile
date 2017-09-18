@@ -36,9 +36,15 @@ RUN set -x \
         fonts-wqy-zenhei \
         libxrender1 \
         fontconfig \
+        libjpeg62-turbo \
         libxext6 \
+        libxrender-dev \
         wkhtmltopdf \
+        xfonts-100dpi \
+        xfonts-75dpi \
+        xfonts-base \
         xvfb \
+        --no-install-recommends \
 
     # Allow header overrides in .htaccess files
     && a2enmod headers \
