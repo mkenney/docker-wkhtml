@@ -104,8 +104,6 @@ class WkHtml {
                 case "no-stop-slow-scripts":
                 case "disable-plugins":
                 case "enable-plugins":
-                case "disable-local-file-access":
-                case "enable-local-file-access":
                 case "images":
                 case "no-images":
                 case "disable-javascript":
@@ -115,6 +113,25 @@ class WkHtml {
                 case "debug-javascript":
                 case "no-debug-javascript":
                     $this->_command .= " --{$option}";
+                break;
+
+                // 1 arg
+                case "cookie-jar":
+                case "encoding":
+                case "javascript-delay":
+                case "load-error-handling":
+                case "minimum-font-size":
+                case "password":
+                case "proxy":
+                case "radiobutton-checked-svg":
+                case "radiobutton-svg":
+                case "user-style-sheet":
+                case "username":
+                case "zoom":
+                case "window-status":
+                case "checkbox-checked-svg":
+                case "checkbox-svg":
+                    $this->_command .= " --{$option} {$val}";
                 break;
 
                 // 1 arg, repeatable
@@ -160,7 +177,6 @@ class WkHtml {
                             case "no-collate":
                             case "grayscale":
                             case "lowquality":
-                            case "quiet":
                             case "background":
                             case "no-background":
                                 $this->_command .= " --{$option}";

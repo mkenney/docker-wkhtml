@@ -1,10 +1,7 @@
 version: '3'
 services:
     wkhtml:
-        #image: mkenney/wkhtml:latest
-        build: .
-        container_name: wkhtml-tst
+        image: mkenney/wkhtml:latest
+        container_name: wkhtml
         ports:
             - "80"
-        volumes:
-            - ./_image/var/www:/var/www

@@ -35,16 +35,56 @@
         </p>
         <ul>
             <li>
+                All endpoints:
+                <p>
+                    <ul>
+                        <li><strong>allow &lt;path&gt;</strong>:  Allow the file or files from the specified folder to be loaded (repeatable)</li>
+                        <li><strong>checkbox-checked-svg &lt;path&gt;</strong>:  Use this SVG file when rendering checked checkboxes</li>
+                        <li><strong>checkbox-svg &lt;path&gt;</strong>:  Use this SVG file when rendering unchecked checkboxes</li>
+                        <li><strong>cookie &lt;name&gt; &lt;value&gt;</strong>:  Set an additional cookie (repeatable)</li>
+                        <li><strong>cookie-jar &lt;path&gt;</strong>:  Read and write cookies from and to the supplied cookie jar file</li>
+                        <li><strong>custom-header &lt;name&gt; &lt;value&gt;</strong>:  Set an additional HTTP header (repeatable)</li>
+                        <li><strong>custom-header-propagation</strong>: Add HTTP headers specified by `custom-header` for each resource request.</li>
+                        <li><strong>enable-plugins</strong>: Enable installed plugins (plugins will likely not work)</li>
+                        <li><strong>encoding &lt;encoding&gt;</strong>:  Set the default text encoding, for input</li>
+                        <li><strong>debug-javascript</strong>: Show javascript debugging output</li>
+                        <li><strong>disable-javascript</strong>: Do not allow web pages to run javascript</li>
+                        <li><strong>disable-plugins</strong>: Disable installed plugins (default)</li>
+                        <li><strong>enable-javascript</strong>: Do allow web pages to run javascript (default)</li>
+                        <li><strong>images</strong>: Do load or print images (default)</li>
+                        <li><strong>javascript-delay &lt;msec&gt;</strong>:  Wait some milliseconds for javascript finish (default 200)</li>
+                        <li><strong>load-error-handling &lt;handler&gt;</strong>:   Specify how to handle pages that fail to load: abort, ignore or skip (default abort)</li>
+                        <li><strong>minimum-font-size &lt;int&gt;</strong>:   Minimum font size</li>
+                        <li><strong>no-custom-header-propagation</strong>: Do not add HTTP headers specified by `custom-header` for each resource request.</li>
+                        <li><strong>no-debug-javascript</strong>: Do not show javascript debugging output (default)</li>
+                        <li><strong>no-images</strong>: Do not load or print images</li>
+                        <li><strong>no-stop-slow-scripts</strong>: Do not Stop slow running javascripts (default)</li>
+                        <li><strong>password &lt;password&gt;</strong>:  HTTP Authentication password</li>
+                        <li><strong>post &lt;name&gt; &lt;value&gt;</strong>:  Add an additional post field (repeatable)</li>
+                        <li><strong>post-file &lt;name&gt; &lt;path&gt;</strong>:   Post an additional file (repeatable)</li>
+                        <li><strong>proxy &lt;proxy&gt;</strong>: Use a proxy</li>
+                        <li><strong>radiobutton-checked-svg &lt;path&gt;</strong>:  Use this SVG file when rendering checked radiobuttons</li>
+                        <li><strong>radiobutton-svg &lt;path&gt;</strong>:  Use this SVG file when rendering unchecked radiobuttons</li>
+                        <li><strong>stop-slow-scripts</strong>: Stop slow running javascripts (default)</li>
+                        <li><strong>user-style-sheet &lt;url&gt;</strong>:   Specify a user style sheet, to load with every page</li>
+                        <li><strong>username &lt;username&gt;</strong>:  HTTP Authentication username</li>
+                        <li><strong>window-status &lt;windowStatus&gt;</strong>:  Wait until window.status is equal to this string before rendering page</li>
+                        <li><strong>zoom &lt;float&gt;</strong>: Use this zoom factor (default 1)</li>
+                    </ul>
+                </p>
+            </li>
+            <li>
                 The <code>/jpg</code>, <code>/png</code>, and <code>/gif</code> endpoints:
                 <p>
                     <ul>
-                        <li><strong>crop-h</strong>: an integer describing the number of pixels to apply</li>
-                        <li><strong>crop-w</strong>: an integer describing the number of pixels to apply</li>
-                        <li><strong>crop-x</strong>: an integer describing the number of pixels to apply</li>
-                        <li><strong>crop-y</strong>: an integer describing the number of pixels to apply</li>
-                        <li><strong>height</strong>: an integer describing the number of pixels to apply</li>
-                        <li><strong>quality</strong>: an integer value from 0 to 100</li>
-                        <li><strong>width</strong>: an integer describing the number of pixels to apply</li>
+                        <li><strong>crop-h &lt;int&gt;</strong>:   Set height for croping</li>
+                        <li><strong>crop-w &lt;int&gt;</strong>:   Set width for croping</li>
+                        <li><strong>crop-x &lt;int&gt;</strong>:   Set x coordinate for croping</li>
+                        <li><strong>crop-y &lt;int&gt;</strong>:   Set y coordinate for croping</li>
+                        <li><strong>format &lt;format&gt;</strong>:    Output file format (default is jpg)</li>
+                        <li><strong>height &lt;int&gt;</strong>:   Set screen height (default is calculated from page content) (default 0)</li>
+                        <li><strong>width &lt;int&gt;</strong>:   Set screen width (default is 1024) (default 1024)</li>
+                        <li><strong>quality &lt;int&gt;</strong>:   Output image quality (between 0 and 100) (default 94)</li>
                     </ul>
                 </p>
             </li>
@@ -52,13 +92,25 @@
                 The <code>/pdf</code> endpoint.
                 <p>
                     <ul>
-                        <li><strong>no-collate</strong>: no value required, do not collate when printing multiple copies</li>
-                        <li><strong>grayscale</strong>: no value required, generate PDF documents in greyscale instead of color</li>
-                        <li><strong>lowquality</strong>: no value required, generate lower quality PDF documents to decrease file size</li>
-                        <li><strong>copies</strong>: an integer describing the number of copies to print</li>
-                        <li><strong>orientation</strong>: a string either 'Landscape' or 'Portrait' (default 'Portrait'). </li>
-                        <li><strong>page-size</strong>: a string defining the page size: 'A4', 'Letter', etc. (default 'A4').</li>
-                        <li><strong>title</strong>: the title of the generated pdf file (The title of the first document is used if not specified)</li>
+                        <li><strong>background</strong>: Do print background (default)</li>
+                        <li><strong>collate</strong>: Collate when printing multiple copies (default)</li>
+                        <li><strong>copies &lt;number&gt;</strong>:    Number of copies to print into the pdf file (default 1)</li>
+                        <li><strong>dpi &lt;dpi&gt;</strong>:   Change the dpi explicitly (this has no effect on X11 based systems)</li>
+                        <li><strong>grayscale</strong>: PDF will be generated in grayscale</li>
+                        <li><strong>lowquality</strong>: Generates lower quality pdf/ps. Useful to shrink the result document space</li>
+                        <li><strong>margin-bottom &lt;unitreal&gt;</strong>:  Set the page bottom margin (default 10mm)</li>
+                        <li><strong>margin-left &lt;unitreal&gt;</strong>:  Set the page left margin (default 10mm)</li>
+                        <li><strong>margin-right &lt;unitreal&gt;</strong>:  Set the page right margin (default 10mm)</li>
+                        <li><strong>margin-top &lt;unitreal&gt;</strong>:  Set the page top margin (default 10mm)</li>
+                        <li><strong>no-background</strong>: Do not print background</li>
+                        <li><strong>no-collate</strong>: Do not collate when printing multiple copies</li>
+                        <li><strong>orientation &lt;orientation&gt;</strong>:   Set orientation to Landscape or Portrait (default Portrait)</li>
+                        <li><strong>output-format &lt;format&gt;</strong>:    Specify an output format to use pdf or ps, instead of looking at the extention of the output filename</li>
+                        <li><strong>page-height &lt;unitreal&gt;</strong>:  Page height</li>
+                        <li><strong>page-offset &lt;offset&gt;</strong>:    Set the starting page number (default 0)</li>
+                        <li><strong>page-size &lt;Size&gt;</strong>:  Set paper size to: A4, Letter, etc. (default A4)</li>
+                        <li><strong>page-width &lt;unitreal&gt;</strong>:  Page width</li>
+                        <li><strong>title &lt;text&gt;</strong>:  The title of the generated pdf file (The title of the first document is used if not specified)</li>
                     </ul>
                 </p>
             </li>
