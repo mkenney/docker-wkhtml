@@ -1,0 +1,2 @@
+/* https://github.com/wkhtmltopdf/wkhtmltopdf/issues/2231 */
+html, body {overflow-x: visible !important;}

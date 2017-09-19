@@ -40,6 +40,7 @@ RUN set -x \
         libxext6 \
         libxrender-dev \
         wkhtmltopdf \
+        xauth \
         xfonts-100dpi \
         xfonts-75dpi \
         xfonts-base \

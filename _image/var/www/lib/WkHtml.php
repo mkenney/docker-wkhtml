@@ -6,10 +6,14 @@ class WkHtml {
     const TO_PNG = 2;
     const TO_PDF = 3;
 
+    const TMP_DIR = '/tmp';
+    const ISSUE_2231 = '/var/www/lib/css';
+
     protected $_command = null;
     protected $_defaults = [
-        'type' => 'pdf'
-        , 'disable-local-file-access' => true
+        'disable-local-file-access' => true
+        , 'quiet' => true
+        , 'user-style-sheet' => '/var/www/lib/css/issue-2231.css'
     ];
     protected $_input = null;
     protected $_filename = null;
@@ -22,6 +26,13 @@ class WkHtml {
         , array $options
         , int $format = null
     ) {
+        if (!isset($options['allow'])) {
+            $options['allow'] = [];
+        }
+        $options['allow'] = (array) $options['allow'];
+        $options['allow'][] = self::TMP_DIR;
+        $options['allow'][] = self::ISSUE_2231;
+        $options = array_merge($this->_defaults, $options);
         array_walk_recursive($options, function(&$value, $key) {
             $value = escapeshellarg($value);
         });
@@ -59,7 +70,9 @@ class WkHtml {
         `{$this->_command}`;
         $this->sendHeaders();
         echo file_get_contents("{$this->_filename}.{$this->_fileext}");
+
         `rm -f {$this->_filename}.*`;
+        `rm -f {$this->_filename}`;
     }
 
     /**
@@ -100,22 +113,26 @@ class WkHtml {
             // Common optiosn
             switch ($option) {
                 // no args
-                case "stop-slow-scripts":
-                case "no-stop-slow-scripts":
+                case "custom-header-propagation":
+                case "debug-javascript":
+                case "disable-javascript":
+                case "disable-local-file-access":
                 case "disable-plugins":
+                case "enable-javascript":
                 case "enable-plugins":
                 case "images":
-                case "no-images":
-                case "disable-javascript":
-                case "enable-javascript":
-                case "custom-header-propagation":
                 case "no-custom-header-propagation":
-                case "debug-javascript":
                 case "no-debug-javascript":
+                case "no-images":
+                case "no-stop-slow-scripts":
+                case "quiet":
+                case "stop-slow-scripts":
                     $this->_command .= " --{$option}";
                 break;
 
                 // 1 arg
+                case "checkbox-checked-svg":
+                case "checkbox-svg":
                 case "cookie-jar":
                 case "encoding":
                 case "javascript-delay":
@@ -127,10 +144,8 @@ class WkHtml {
                 case "radiobutton-svg":
                 case "user-style-sheet":
                 case "username":
-                case "zoom":
                 case "window-status":
-                case "checkbox-checked-svg":
-                case "checkbox-svg":
+                case "zoom":
                     $this->_command .= " --{$option} {$val}";
                 break;
 
@@ -173,12 +188,12 @@ class WkHtml {
                             break;
 
                             // no args
+                            case "background":
                             case "collate":
-                            case "no-collate":
                             case "grayscale":
                             case "lowquality":
-                            case "background":
                             case "no-background":
+                            case "no-collate":
                                 $this->_command .= " --{$option}";
                             break;
 
@@ -192,10 +207,10 @@ class WkHtml {
                             case "orientation":
                             case "output-format":
                             case "page-height":
+                            case "page-offset":
                             case "page-size":
                             case "page-width":
                             case "title":
-                            case "page-offset":
                                 $this->_command .= " --{$option} {$val}";
                             break;
                         }
@@ -216,8 +231,8 @@ class WkHtml {
                             case "crop-y":
                             case "format":
                             case "height":
-                            case "width":
                             case "quality":
+                            case "width":
                                 $this->_command .= " --{$option} {$val}";
                             break;
                         }
