@@ -10,6 +10,40 @@ This service provides four endpoints: `/gif`, `/jpg`, `/pdf`, and `/png`. In ord
 
 Options are passed as URL query parameters. For example, to print a PDF in landscape orientation, the `POST` URL would be `/pdf?orientation=landscape`.
 
+* All endpoints:
+  * **allow \<path>**: Allow the file or files from the specified folder to be loaded (repeatable)
+  * **checkbox-checked-svg \<path>**: Use this SVG file when rendering checked checkboxes
+  * **checkbox-svg \<path>**: Use this SVG file when rendering unchecked checkboxes
+  * **cookie \<name> \<value>**: Set an additional cookie (repeatable)
+  * **cookie-jar \<path>**: Read and write cookies from and to the supplied cookie jar file
+  * **custom-header \<name> \<value>**: Set an additional HTTP header (repeatable)
+  * **custom-header-propagation**: Add HTTP headers specified by `custom-header` for each resource request.
+  * **enable-plugins**: Enable installed plugins (plugins will likely not work)
+  * **encoding \<encoding>**: Set the default text encoding, for input
+  * **debug-javascript**: Show javascript debugging output
+  * **disable-javascript**: Do not allow web pages to run javascript
+  * **disable-plugins**: Disable installed plugins (default)
+  * **enable-javascript**: Do allow web pages to run javascript (default)
+  * **images**: Do load or print images (default)
+  * **javascript-delay \<msec>**: Wait some milliseconds for javascript finish (default 200)
+  * **load-error-handling \<handler>**: Specify how to handle pages that fail to load; abort, ignore or skip (default abort)
+  * **minimum-font-size \<int>**: Minimum font size
+  * **no-custom-header-propagation**: Do not add HTTP headers specified by `custom-header` for each resource request.
+  * **no-debug-javascript**: Do not show javascript debugging output (default)
+  * **no-images**: Do not load or print images
+  * **no-stop-slow-scripts**: Do not Stop slow running javascripts (default)
+  * **password \<password>**: HTTP Authentication password
+  * **post \<name> \<value>**: Add an additional post field (repeatable)
+  * **post-file \<name> \<path>**: Post an additional file (repeatable)
+  * **proxy \<proxy>**: Use a proxy
+  * **radiobutton-checked-svg \<path>**: Use this SVG file when rendering checked radiobuttons
+  * **radiobutton-svg \<path>**: Use this SVG file when rendering unchecked radiobuttons
+  * **stop-slow-scripts**: Stop slow running javascripts (default)
+  * **user-style-sheet \<url>**: Specify a user style sheet, to load with every page
+  * **username \<username>**: HTTP Authentication username
+  * **window-status \<windowStatus>**: Wait until window.status is equal to this string before rendering page
+  * **zoom \<float>**: Use this zoom factor (default 1)
+
 * The `/jpg`, `/png`, and `/gif` endpoints:
   * **crop-h**: an integer describing the number of pixels to apply
   * **crop-w**: an integer describing the number of pixels to apply
@@ -18,14 +52,27 @@ Options are passed as URL query parameters. For example, to print a PDF in lands
   * **height**: an integer describing the number of pixels to apply
   * **quality**: an integer value from 0 to 100
   * **width**: an integer describing the number of pixels to apply
-* The `/pdf` endpoint.
-  * **no-collate**: no value required, do not collate when printing multiple copies
-  * **grayscale**: no value required, generate PDF documents in greyscale instead of color
-  * **lowquality**: no value required, generate lower quality PDF documents to decrease file size
-  * **copies**: an integer describing the number of copies to print
-  * **orientation**: a string either 'Landscape' or 'Portrait' (default 'Portrait').
-  * **page-size**: a string defining the page size: 'A4', 'Letter', etc. (default 'A4').
-  * **title**: the title of the generated pdf file (The title of the first document is used if not specified)
+
+* The `/pdf` endpoint:
+  * **background**: Do print background (default)
+  * **collate**: Collate when printing multiple copies (default)
+  * **copies \<number>**: Number of copies to print into the pdf file (default 1)
+  * **dpi \<dpi>**: Change the dpi explicitly (this has no effect on X11 based systems)
+  * **grayscale**: PDF will be generated in grayscale
+  * **lowquality**: Generates lower quality pdf/ps. Useful to shrink the result document space
+  * **margin-bottom \<unitreal>**: Set the page bottom margin (default 10mm)
+  * **margin-left \<unitreal>**: Set the page left margin (default 10mm)
+  * **margin-right \<unitreal>**: Set the page right margin (default 10mm)
+  * **margin-top \<unitreal>**: Set the page top margin (default 10mm)
+  * **no-background**: Do not print background
+  * **no-collate**: Do not collate when printing multiple copies
+  * **orientation \<orientation>**: Set orientation to Landscape or Portrait (default Portrait)
+  * **output-format \<format>**: Specify an output format to use pdf or ps, instead of looking at the extention of the output filename
+  * **page-height \<unitreal>**: Page height
+  * **page-offset \<offset>**: Set the starting page number (default 0)
+  * **page-size \<Size>**: Set paper size to; A4, Letter, etc. (default A4)
+  * **page-width \<unitreal>**: Page width
+  * **title \<text>**: The title of the generated pdf file (The title of the first document is used if not specified)
 
 See the [wkhtml documentation](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt) for additional details.
 
