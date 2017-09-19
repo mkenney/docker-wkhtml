@@ -12,8 +12,13 @@ class WkHtml {
     protected $_command = null;
     protected $_defaults = [
         'disable-local-file-access' => true
+        , 'disable-smart-width' => true
         , 'quiet' => true
         , 'user-style-sheet' => '/var/www/lib/css/issue-2231.css'
+    ];
+    protected $_image_defaults = [
+    ];
+    protected $_pdf_defaults = [
     ];
     protected $_input = null;
     protected $_filename = null;
@@ -26,17 +31,6 @@ class WkHtml {
         , array $options
         , int $format = null
     ) {
-        if (!isset($options['allow'])) {
-            $options['allow'] = [];
-        }
-        $options['allow'] = (array) $options['allow'];
-        $options['allow'][] = self::TMP_DIR;
-        $options['allow'][] = self::ISSUE_2231;
-        $options = array_merge($this->_defaults, $options);
-        array_walk_recursive($options, function(&$value, $key) {
-            $value = escapeshellarg($value);
-        });
-
         $this->_input = $input;
         $this->_output_format = $format;
         $this->_filename = tempnam('/tmp', random_int(0, time()));
@@ -54,6 +48,22 @@ class WkHtml {
                 $this->_fileext = 'pdf';
             break;
         }
+
+        if (!isset($options['allow'])) {
+            $options['allow'] = [];
+        }
+        $options['allow'] = (array) $options['allow'];
+        $options['allow'][] = self::TMP_DIR;
+        $options['allow'][] = self::ISSUE_2231;
+        $options = array_merge($this->_defaults, $options);
+        if (self::TO_PDF === $this->_output_format) {
+            $options = array_merge($this->_pdf_defaults, $options);
+        } else {
+            $options = array_merge($this->_image_defaults, $options);
+        }
+        array_walk_recursive($options, function(&$value, $key) {
+            $value = escapeshellarg($value);
+        });
         $this->_options = $options;
     }
 
@@ -222,6 +232,10 @@ class WkHtml {
                                 header("HTTP/1.1 400 Bad Request");
                                 echo "Invalid option '{$option}'";
                                 exit;
+                            break;
+
+                            case "disable-smart-width":
+                                $this->_command .= " --{$option}";
                             break;
 
                             // 1 arg
