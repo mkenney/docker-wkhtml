@@ -74,8 +74,6 @@ Options are passed as URL query parameters. For example, to print a PDF in lands
   * **page-width \<unitreal>**: Page width
   * **title \<text>**: The title of the generated pdf file (The title of the first document is used if not specified)
 
-See the [wkhtml documentation](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt) for additional details.
-
 ## License
 
 ### GNU LESSER GENERAL PUBLIC LICENSE
