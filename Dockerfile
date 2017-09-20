@@ -7,6 +7,7 @@ ENV WK_URL "https://downloads.wkhtmltopdf.org/0.12/0.12.4"
 ENV WK_PKG "wkhtmltox-0.12.4_linux-generic-amd64.tar.xz"
 
 # System update and configuration
+ENV DEBIAN_FRONTEND noninteractive
 RUN set -x \
     && echo 'alias ll="ls -laF"' >> /root/.bashrc \
     && echo 'alias e="exit"' >> /root/.bashrc \
@@ -43,6 +44,7 @@ RUN set -x \
         libjpeg62-turbo \
         libxext6 \
         libxrender-dev \
+        locales \
         wget \
         xauth \
         xfonts-100dpi \
@@ -52,9 +54,19 @@ RUN set -x \
 
     # Allow header overrides in .htaccess files
     && a2enmod headers \
-    && a2enmod rewrite
+    && a2enmod rewrite \
+    && locale-gen --purge en_US.UTF-8 \
+    && dpkg-reconfigure locales \
+    && /usr/sbin/update-locale LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8 \
+    && echo -e 'LANG="en_US.UTF-8"\nLANGUAGE="en_US:en"\n' > /etc/default/locale
+
+ENV UTF8_LOCALE en_US
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
+ENV LC_ALL C.UTF-8
 
 # Install patched wkhtml
+ENV WKHTML_LIB /usr/share/wkhtmltox
 RUN set -x \
     && cd /usr/share \
     && wget -nv "$WK_URL/$WK_PKG" \
