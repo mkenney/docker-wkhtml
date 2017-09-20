@@ -9,6 +9,11 @@ switch ($uri) {
         exit;
     break;
 
+    case '/healthcheck':
+        header('HTTP/1.1 200 OK');
+        exit;
+    break;
+
     case '/gif':
         $format = WkHtml::TO_GIF;
     break;
