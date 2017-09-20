@@ -1,8 +1,12 @@
 FROM php:apache
 
-ENV TERM xterm
+ENV TERM "xterm"
 
-# System update
+ENV WK_HASH "049b2cdec9a8254f0ef8ac273afaf54f7e25459a273e27189591edc7d7cf29db"
+ENV WK_URL "https://downloads.wkhtmltopdf.org/0.12/0.12.4"
+ENV WK_PKG "wkhtmltox-0.12.4_linux-generic-amd64.tar.xz"
+
+# System update and configuration
 RUN set -x \
     && echo 'alias ll="ls -laF"' >> /root/.bashrc \
     && echo 'alias e="exit"' >> /root/.bashrc \
@@ -39,7 +43,7 @@ RUN set -x \
         libjpeg62-turbo \
         libxext6 \
         libxrender-dev \
-        wkhtmltopdf \
+        wget \
         xauth \
         xfonts-100dpi \
         xfonts-75dpi \
@@ -50,6 +54,19 @@ RUN set -x \
     # Allow header overrides in .htaccess files
     && a2enmod headers \
     && a2enmod rewrite
+
+# Install patched wkhtml
+RUN set -x \
+    && cd /usr/share \
+    && wget -nv "$WK_URL/$WK_PKG" \
+    && echo "$WK_HASH  $WK_PKG" > wkhtml.hsh \
+    && sha256sum "$WK_PKG" \
+    && sha256sum -c wkhtml.hsh \
+    && mkdir wkhtmltox \
+    && tar -xf $WK_PKG -C wkhtmltox --strip-components 1 \
+    && rm -f $WK_PKG \
+    && ln -s /usr/share/wkhtmltox/bin/wkhtmltoimage /usr/bin/wkhtmltoimage \
+    && ln -s /usr/share/wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 
 # Add resources
 COPY _image/etc/apache2/sites-enabled/vhost.conf /etc/apache2/sites-enabled/wkhtml.conf

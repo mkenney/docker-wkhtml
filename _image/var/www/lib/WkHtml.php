@@ -31,6 +31,7 @@ class WkHtml {
         , array $options
         , int $format = null
     ) {
+        $this->setInput($input);
         $this->_input = $input;
         $this->_output_format = $format;
         $this->_filename = tempnam('/tmp', random_int(0, time()));
@@ -108,14 +109,12 @@ class WkHtml {
 
     protected function _generateCmd() {
         if (self::TO_PDF === $this->_output_format) {
-            $this->_command = 'xvfb-run -- /usr/bin/wkhtmltopdf';
-            $this->_addCmdOptions();
-            $this->_command .= " {$this->_filename}.html {$this->_filename}.{$this->_fileext}";
+            $this->_command = '/usr/bin/wkhtmltopdf';
         } else {
-            $this->_command = 'xvfb-run -- /usr/bin/wkhtmltoimage';
-            $this->_addCmdOptions();
-            $this->_command .= " --format {$this->_fileext} {$this->_filename}.html {$this->_filename}.{$this->_fileext}";
+            $this->_command = "/usr/bin/wkhtmltoimage --format {$this->_fileext}";
         }
+        $this->_addCmdOptions();
+        $this->_command .= " {$this->_filename}.html {$this->_filename}.{$this->_fileext}";
     }
 
     protected function _addCmdOptions() {
@@ -254,5 +253,15 @@ class WkHtml {
                 break;
             }
         }
+    }
+
+    public function setInput(string $input) {
+        // Remove tracking pixels, atches img tags that are size 1x1
+        $search = '/<img[^>]*(width=["\']1["\'][^>]*|height=["\']1["\'][^>]*){2}>/im';
+        $replace = '<!-- TRACKING PIXEL REMOVED -->';
+        $input = preg_replace($search, $replace, $input, -1, $count);
+
+        $this->_input = $input;
+        return $this;
     }
 }
