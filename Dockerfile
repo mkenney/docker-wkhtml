@@ -48,7 +48,6 @@ RUN set -x \
         xfonts-100dpi \
         xfonts-75dpi \
         xfonts-base \
-        xvfb \
         --no-install-recommends \
 
     # Allow header overrides in .htaccess files
