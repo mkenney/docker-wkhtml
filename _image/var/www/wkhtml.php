@@ -4,7 +4,7 @@ require_once('lib/WkHtml.php');
 $input = file_get_contents("php://input");
 $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
 switch ($uri) {
-    default:
+    case '/':
         require_once('usage.html');
         exit;
     break;
@@ -17,16 +17,23 @@ switch ($uri) {
     case '/gif':
         $format = WkHtml::TO_GIF;
     break;
+
     case '/jpg':
         $format = WkHtml::TO_JPG;
     break;
+
     case '/png':
         $format = WkHtml::TO_PNG;
     break;
+
     case '/pdf':
         $format = WkHtml::TO_PDF;
     break;
+
+    default:
+        header("HTTP/1.1 404 Not Found");
+        exit;
+    break;
 }
 
-$wk = new WkHtml($input, $_GET, $format);
-$wk->generate();
+(new WkHtml($input, $format, $_GET))->generate()->send();

@@ -21,77 +21,46 @@ class WkHtml {
     protected $_pdf_defaults = [
     ];
     protected $_input = null;
+    protected $_image = null;
     protected $_filename = null;
     protected $_fileext = 'jpg';
-    protected $_output_format = self::TO_JPG;
+    protected $_format = self::TO_JPG;
     protected $_options = [];
 
     public function __construct(
         string $input
-        , array $options
         , int $format = null
+        , array $options = null
     ) {
         $this->setInput($input);
-        $this->_input = $input;
-        $this->_output_format = $format;
-        $this->_filename = tempnam('/tmp', random_int(0, time()));
-        switch ($this->_output_format) {
-            case self::TO_GIF:
-                $this->_fileext = 'gif';
-            break;
-            case self::TO_JPG:
-                $this->_fileext = 'jpg';
-            break;
-            case self::TO_PNG:
-                $this->_fileext = 'png';
-            break;
-            case self::TO_PDF:
-                $this->_fileext = 'pdf';
-            break;
-        }
-
-        if (!isset($options['allow'])) {
-            $options['allow'] = [];
-        }
-        $options['allow'] = (array) $options['allow'];
-        $options['allow'][] = self::TMP_DIR;
-        $options['allow'][] = self::ISSUE_2231;
-        $options = array_merge($this->_defaults, $options);
-        if (self::TO_PDF === $this->_output_format) {
-            $options = array_merge($this->_pdf_defaults, $options);
-        } else {
-            $options = array_merge($this->_image_defaults, $options);
-        }
-        array_walk_recursive($options, function(&$value, $key) {
-            $value = escapeshellarg($value);
-        });
-        $this->_options = $options;
+        $this->setFormat($format);
+        $this->setOptions($options);
     }
 
     /**
-     * Generate and output an image using the specified options
+     * Generate an image using the specified options
      * @return void
      */
     public function generate() {
-        $fp = fopen("{$this->_filename}.html", 'w');
-        fwrite($fp, $this->_input);
+        $fp = fopen("{$this->getFilename()}.html", 'w');
+        fwrite($fp, $this->getInput());
         fclose($fp);
 
-        $this->_generateCmd();
-        `{$this->_command}`;
-        $this->sendHeaders();
-        echo file_get_contents("{$this->_filename}.{$this->_fileext}");
+        `{$this->getCommand()}`;
+        $this->_image = file_get_contents("{$this->getFilename()}.{$this->getFileExtension()}");
 
-        `rm -f {$this->_filename}.*`;
-        `rm -f {$this->_filename}`;
+        `rm -f {$this->getFilename()}.*`;
+        `rm -f {$this->getFilename()}`;
+
+        return $this;
     }
 
     /**
-     * Send the appropriate content-type header
-     * @return void
+     * Send the image data to the client
+     * @return WkHtml
      */
-    public function sendHeaders() {
-        switch ($this->_output_format) {
+    public function send() {
+        switch ($this->getFormat()) {
             case self::TO_GIF:
                 header('Content-Type: image/gif');
             break;
@@ -105,18 +74,147 @@ class WkHtml {
                 header('Content-Type: application/pdf');
             break;
         }
+        echo $this->_image;
+        return $this;
     }
 
-    protected function _generateCmd() {
-        if (self::TO_PDF === $this->_output_format) {
-            $this->_command = '/usr/bin/wkhtmltopdf';
-        } else {
-            $this->_command = "/usr/bin/wkhtmltoimage --format {$this->_fileext}";
+    /**
+     * Get the wkhtml shell command
+     * @return string
+     */
+    protected function getCommand() {
+        if (is_null($this->_command)) {
+            if (self::TO_PDF === $this->getFormat()) {
+                $this->_command = '/usr/bin/wkhtmltopdf';
+            } else {
+                $this->_command = "/usr/bin/wkhtmltoimage --format {$this->getFileExtension()}";
+            }
+            $this->_addCmdOptions();
+            $this->_command .= " {$this->getFilename()}.html {$this->getFilename()}.{$this->getFileExtension()}";
         }
-        $this->_addCmdOptions();
-        $this->_command .= " {$this->_filename}.html {$this->_filename}.{$this->_fileext}";
+        return $this->_command;
     }
 
+    /**
+     * Get the output file extension
+     * @return string
+     */
+    public function getFileExtension() {
+        if (is_null($this->_fileext)) {
+            switch ($this->getFormat()) {
+                case self::TO_GIF:
+                    $this->_fileext = 'gif';
+                break;
+                case self::TO_JPG:
+                    $this->_fileext = 'jpg';
+                break;
+                case self::TO_PNG:
+                    $this->_fileext = 'png';
+                break;
+                case self::TO_PDF:
+                    $this->_fileext = 'pdf';
+                break;
+            }
+        }
+        return $this->_fileext;
+    }
+
+    /**
+     * Get the temporary file name
+     * @return string
+     */
+    public function getFilename() {
+        if (is_null($this->_filename)) {
+            $this->_filename = tempnam('/tmp', random_int(0, time()));
+        }
+        return $this->_filename;
+    }
+
+    /**
+     * Get the output file format
+     * @return int
+     */
+    public function getFormat() {
+        return $this->_format;
+    }
+
+    /**
+     * Get the input HTML
+     * @return string
+     */
+    public function getInput() {
+        return $this->_input;
+    }
+
+    /**
+     * Set the output file format
+     * @param int|null $format
+     * @return WkHtml
+     */
+    public function setFormat(int $format = null) {
+        if (!is_null($format)) {
+            switch ($this->_format) {
+                case self::TO_GIF:
+                case self::TO_JPG:
+                case self::TO_PNG:
+                case self::TO_PDF:
+                    $this->_format = $format;
+                break;
+
+                default:
+                    throw new \InvalidArgumentException("Invalid format '{$format}'");
+                break;
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Set the input HTML
+     * @param string $input
+     * @return WkHtml
+     */
+    public function setInput(string $input) {
+        // Remove tracking pixels, atches img tags that are size 1x1
+        $search = '/<img[^>]*(width=["\']1["\'][^>]*|height=["\']1["\'][^>]*){2}>/im';
+        $replace = '<!-- TRACKING PIXEL REMOVED -->';
+        $input = preg_replace($search, $replace, $input, -1, $count);
+
+        $this->_input = $input;
+        return $this;
+    }
+
+    /**
+     * Set the wkhtml command options
+     * @param array|null $options
+     * @return WkHtml
+     */
+    public function setOptions(array $options = null) {
+        if (!is_null($options)) {
+            if (!isset($options['allow'])) {
+                $options['allow'] = [];
+            }
+            $options['allow'] = (array) $options['allow'];
+            $options['allow'][] = self::TMP_DIR;
+            $options['allow'][] = self::ISSUE_2231;
+            $options = array_merge($this->_defaults, $options);
+            if (self::TO_PDF === $this->getFormat()) {
+                $options = array_merge($this->_pdf_defaults, $options);
+            } else {
+                $options = array_merge($this->_image_defaults, $options);
+            }
+            array_walk_recursive($options, function(&$value, $key) {
+                $value = escapeshellarg($value);
+            });
+            $this->_options = $options;
+        }
+        return $this;
+    }
+
+    /**
+     * Add any options to the shell command
+     * @return WkHtml
+     */
     protected function _addCmdOptions() {
         foreach($this->_options as $option => $val) {
             // Common optiosn
@@ -127,6 +225,7 @@ class WkHtml {
                 case "disable-javascript":
                 case "disable-local-file-access":
                 case "disable-plugins":
+                case "disable-smart-width":
                 case "enable-javascript":
                 case "enable-plugins":
                 case "images":
@@ -188,7 +287,7 @@ class WkHtml {
                 default:
 
                     // PDF options
-                    if (self::TO_PDF === $this->_output_format) {
+                    if (self::TO_PDF === $this->getFormat()) {
                         switch ($option) {
                             default:
                                 header("HTTP/1.1 400 Bad Request");
@@ -253,15 +352,6 @@ class WkHtml {
                 break;
             }
         }
-    }
-
-    public function setInput(string $input) {
-        // Remove tracking pixels, atches img tags that are size 1x1
-        $search = '/<img[^>]*(width=["\']1["\'][^>]*|height=["\']1["\'][^>]*){2}>/im';
-        $replace = '<!-- TRACKING PIXEL REMOVED -->';
-        $input = preg_replace($search, $replace, $input, -1, $count);
-
-        $this->_input = $input;
         return $this;
     }
 }
