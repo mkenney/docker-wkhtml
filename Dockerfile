@@ -35,7 +35,6 @@ RUN set -x \
         fonts-jura \
         fonts-lato \
         fonts-mplus \
-        fonts-okolaks \
         fonts-play \
         fonts-wqy-microhei \
         fonts-wqy-zenhei \
