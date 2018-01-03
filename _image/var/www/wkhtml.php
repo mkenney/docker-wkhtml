@@ -1,4 +1,5 @@
 <?php
+set_time_limit(60);
 require_once('lib/WkHtml.php');
 
 $input = file_get_contents("php://input");

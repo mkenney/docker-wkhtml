@@ -43,14 +43,14 @@ class WkHtml {
      */
     public function generate() {
         $fp = fopen("{$this->getFilename()}.html", 'w');
-        fwrite($fp, $this->getInput());
+        fputs($fp, $this->getInput());
         fclose($fp);
-
+error_log($this->getCommand());
         `{$this->getCommand()}`;
         $this->_image = file_get_contents("{$this->getFilename()}.{$this->getFileExtension()}");
 
-        `rm -f {$this->getFilename()}.*`;
-        `rm -f {$this->getFilename()}`;
+//        `rm -f {$this->getFilename()}.*`;
+//        `rm -f {$this->getFilename()}`;
 
         return $this;
     }
